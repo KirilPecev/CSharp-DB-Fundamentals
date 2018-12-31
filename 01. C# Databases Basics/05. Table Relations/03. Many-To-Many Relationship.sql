@@ -1,0 +1,53 @@
+CREATE TABLE Students(
+	StudentID INT NOT NULL IDENTITY,
+	NAME NVARCHAR(50) NOT NULL,
+
+	CONSTRAINT PK_Students
+	PRIMARY KEY(StudentID)
+)
+
+INSERT INTO Students (NAME)
+VALUES
+('Mila'),
+('Toni'),
+('Ron')
+
+CREATE TABLE Exams(
+	ExamID INT NOT NULL IDENTITY(101,1),
+	NAME NVARCHAR(50) NOT NULL,
+
+	CONSTRAINT PK_Exams
+	PRIMARY KEY(ExamID)
+)
+
+INSERT INTO Exams(NAME)
+VALUES
+('SpringMVC'),
+('Neo4j'),
+('Oracle 11g')
+
+CREATE TABLE StudentsExams(
+	StudentID INT NOT NULL,
+	ExamID INT NOT NULL
+
+	CONSTRAINT PK_StudentsExams
+	PRIMARY KEY(StudentID, ExamID),
+
+	CONSTRAINT FK_StudentsExams_Students
+	FOREIGN KEY(StudentID)
+	REFERENCES Students,
+
+	CONSTRAINT FK_StudentsExams_Exams
+	FOREIGN KEY(ExamID)
+	REFERENCES Exams
+)
+
+INSERT INTO StudentsExams(StudentID, ExamID)
+VALUES
+(1,101),
+(1,102),
+(2,101),
+(3,103),
+(2,102),
+(2,103)
+

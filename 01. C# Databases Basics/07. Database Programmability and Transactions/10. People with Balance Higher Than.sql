@@ -6,5 +6,6 @@ SELECT ah.FirstName AS [First Name], ah.LastName AS [Last Name]
   ON acc.AccountHolderId = ah.Id
   GROUP BY FirstName, LastName
   HAVING SUM(acc.Balance) > @number
+  ORDER BY [First Name], [Last Name]	
 
  EXEC dbo.usp_GetHoldersWithBalanceHigherThan 200

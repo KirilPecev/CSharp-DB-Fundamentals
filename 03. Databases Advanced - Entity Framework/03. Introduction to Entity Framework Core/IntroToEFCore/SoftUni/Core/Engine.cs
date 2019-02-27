@@ -11,9 +11,12 @@
     public class Engine
     {
         public void Run()
-        {
-            SoftUniContext context = new SoftUniContext();
-            Console.WriteLine(GetEmployeesFullInformation(context));
+        {         
+            using (SoftUniContext context = new SoftUniContext())
+            {
+                string result = GetEmployeesFullInformation(context);
+                Console.WriteLine(result);
+            }
         }
 
         //Problem 03. Employees Full Information

@@ -25,7 +25,7 @@
         {
             if (this.MoneyOwned <= 0 || this.MoneyOwned - amount < 0)
             {
-                throw new ArgumentException("Invalid operation!");
+                throw new ArgumentException("Not enough money!");
             }
 
             this.MoneyOwned -= amount;

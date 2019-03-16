@@ -1,27 +1,39 @@
-﻿namespace BillsPaymentSystem.App.Models
+﻿namespace BillsPaymentSystem.App.Core.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using BillsPaymentSystem.Models;
     using BillsPaymentSystem.Models.Enums;
     using Data;
+    using Interfaces;
     using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
-    public class DbSeeder
+    public class InitializeDatabaseCommand : ICommand
     {
         private readonly BillsPaymentSystemContext _context;
 
-        public DbSeeder(BillsPaymentSystemContext context)
+        public InitializeDatabaseCommand(BillsPaymentSystemContext context)
         {
             this._context = context;
         }
 
-        public void Seed()
+        public string Execute(string[] args)
         {
             this._context.Database.EnsureDeleted();
             this._context.Database.Migrate();
 
+            User[] users = SeedUsers();
+            CreditCard[] creditCards = SeedCreditCards();
+            BankAccount[] bankAccounts = SeedBankAccounts();
+
+            this._context.SaveChanges();
+
+            return $"Database was filled with data. :)";
+        }
+
+        private User[] SeedUsers()
+        {
             User[] users = new[]
             {
                 new User
@@ -65,6 +77,11 @@
                 }
             }
 
+            return users;
+        }
+
+        private CreditCard[] SeedCreditCards()
+        {
             CreditCard[] creditCards = new[]
             {
                 new CreditCard()
@@ -105,6 +122,11 @@
                 }
             }
 
+            return creditCards;
+        }
+
+        private BankAccount[] SeedBankAccounts()
+        {
             BankAccount[] bankAccounts = new[]
             {
                 new BankAccount
@@ -146,6 +168,11 @@
                 }
             }
 
+            return bankAccounts;
+        }
+
+        private void SeedPaymentMethods(User[] users, CreditCard[] creditCards, BankAccount[] bankAccounts)
+        {
             var paymentMethods = new[]
             {
                 new PaymentMethod
@@ -212,10 +239,6 @@
                     this._context.PaymentMethods.Add(payment);
                 }
             }
-
-            this._context.SaveChanges();
-
-            Console.WriteLine($"Database was filled with data. :)");
         }
 
         private bool IsValid(object entity)

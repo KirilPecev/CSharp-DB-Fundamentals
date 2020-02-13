@@ -2,3 +2,5 @@
 Exercises 
 # Built With
 .NET Core
+SQL
+Entity Framework
